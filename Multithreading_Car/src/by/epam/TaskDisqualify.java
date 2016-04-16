@@ -6,6 +6,9 @@ package by.epam;
 import java.util.TimerTask;
 
 /**
+ * This class is task for car.
+ * 
+ * 
  * @author Andrei Yahorau
  *
  */
@@ -14,7 +17,7 @@ public class TaskDisqualify extends TimerTask {
 	private Car car;
 	
 	/**
-	 * @param car
+	 * @param car is car
 	 */
 	public TaskDisqualify(Car car) {
 		this.car = car;
@@ -22,7 +25,7 @@ public class TaskDisqualify extends TimerTask {
 
 	@Override
 	public void run() {
-		car.disqualy();
+		car.disqualify();
 	}
 
 }

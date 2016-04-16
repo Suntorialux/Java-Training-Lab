@@ -24,7 +24,10 @@ public class Car implements Runnable {
 		this.friction = friction;
 	}
 
-	public void disqualy() {
+	/**
+	* This method disqualify car
+	*/
+	public void disqualify() {
 		this.stop = true;
 	}
 
@@ -38,15 +41,20 @@ public class Car implements Runnable {
 			}
 
 			synchronized (this) {
+				
+	// If car is first and not disqualified, then available will change value 			
+				
 				if (!stop && available) {
 					System.out.println("Winner is " + name);
 					available = false;
 				}
+				
+	// If car is disqualified, then print it name and status "is disqualify" 
 				if (stop) {
 					System.out.println(name + " is disqualify!!!");
 				}
 			}
-			
+
 		} catch (InterruptedException e) {
 			log.info(e.getMessage());
 		}
