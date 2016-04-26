@@ -1,4 +1,4 @@
-package mySort;
+package by.epam;
 
 import java.util.Arrays;
 

@@ -2,7 +2,7 @@
 import java.util.Arrays;
 import java.util.Random;
 
-import mySort.SortThread;
+import by.epam.SortThread;
 
 public class Runner {
 
