@@ -7,23 +7,24 @@ import by.epam.SortThread;
 public class Runner {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// int threads = Runtime.getRuntime().availableProcessors();
+
+		// We create an array and fill it with randomly
 
 		Random rand = new Random();
-		final int[] values = new int[10000000];
+		int[] values = new int[10000000];
 		for (int i = 0; i < values.length; i++) {
 			values[i] = rand.nextInt();
 		}
 
-		// print(values);
-
+		// Make a timestamp
 		long start = System.currentTimeMillis();
 
+		// Divide the array into two
 		int middle = values.length / 2;
 		int[] left = Arrays.copyOfRange(values, 0, middle);
 		int[] right = Arrays.copyOfRange(values, middle, values.length);
 
+		// Sort arrays
 		SortThread thread1 = new SortThread(left);
 		SortThread thread2 = new SortThread(right);
 
@@ -37,32 +38,30 @@ public class Runner {
 			e.printStackTrace();
 		}
 
-		int[] finishArray = merge(left, right);
+		// Merge two arrays in one
+		merge(left, right);
 
 		long end = System.currentTimeMillis();
 
+		// Print the time of sorting two thread
 		System.out.println("Sort two thread: " + (end - start));
 
-		// print(finishArray);
-
+		// Sort one thread
 		start = System.currentTimeMillis();
 
 		Arrays.sort(values);
 
 		end = System.currentTimeMillis();
+
+		// Print the time of sorting one thread
 		System.out.println("Sort one thread: " + (end - start));
 
 	}
 
-	/*
-	 * private static void print (int [] array) { for(int value : array) {
-	 * System.out.print(value+" "); } System.out.println(""); }
-	 * 
-	 */
-
+	// method merge two array in one
 	private static int[] merge(int[] arr_1, int[] arr_2) {
 		int len_1 = arr_1.length, len_2 = arr_2.length;
-		int a = 0, b = 0, len = len_1 + len_2; // a, b - счетчики в массивах
+		int a = 0, b = 0, len = len_1 + len_2;
 		int[] result = new int[len];
 		for (int i = 0; i < len; i++) {
 			if (b < len_2 && a < len_1) {
