@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The flights is operated by Singapore Airlines -->
+<shedule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.epamlab" xsi:schemaLocation="http://www.epamlab Shedule.xsd">
+	<flight number="SQ12">
+		<aircraft number="674523F2">
+			<type>Airbus</type>
+			<model>A380-800</model>
+		</aircraft>
+		<departure>
+			<country>Singapore</country>
+			<city>Singapore</city>
+			<airport>Changi Intl</airport>
+			<date>
+				<date>2016-06-01</date>
+				<time>10:40</time>
+			</date>
+			<terminal>D</terminal>
+			<gate>15</gate>
+		</departure>
+		<arrival>
+			<country>USA</country>
+			<city>Atlanta</city>
+			<airport>Hartsfield-Jackson Atlanta</airport>
+			<date>
+				<date>2016-06-01</date>
+				<time>19:40</time>
+			</date>
+			<terminal>F</terminal>
+			<gate>45</gate>
+		</arrival>
+	</flight>
+</shedule>
+
+
