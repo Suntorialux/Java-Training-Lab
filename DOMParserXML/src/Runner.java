@@ -28,9 +28,9 @@ public class Runner {
 				System.out.println(flight);
 			}
 
-			builder.exportSheduleToXML("src/shedule.xml", builder.getShedule());
+		builder.exportSheduleToXML("src/shedule.xml", builder.getShedule());
 			
-		} catch (TransformerException | ParseException e) {
+		} catch (ParseException | TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

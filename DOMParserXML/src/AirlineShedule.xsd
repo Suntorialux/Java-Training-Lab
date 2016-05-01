@@ -56,7 +56,7 @@
 	<xs:complexType name="date">
 		<xs:sequence>
 			<xs:element name="date" type="xs:date" />
-			<xs:element name="time" type="xs:string" />
+			<xs:element name="time" type="xs:time" />
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

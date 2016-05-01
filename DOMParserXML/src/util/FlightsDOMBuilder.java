@@ -5,11 +5,8 @@ package util;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -28,6 +25,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import beans.Flight;
+import beans.InfoFlightData;
 
 /**
  * @author Andrei Yahorau
@@ -37,8 +35,6 @@ public class FlightsDOMBuilder {
 
 	private List<Flight> shedule;
 	private DocumentBuilder documentBuilder;
-
-	private final static DateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
 
 	/**
 	 * @param shedule
@@ -88,12 +84,12 @@ public class FlightsDOMBuilder {
 	}
 
 	/**
+	 * Create the object the Flight
 	 * 
 	 * @param flightElement
-	 * @return
-	 * @throws ParseException
+	 * @return the flight
 	 */
-	private Flight buildFlight(Element flightElement) throws ParseException {
+	private Flight buildFlight(Element flightElement) {
 		Flight flight = new Flight();
 		// create flight
 		flight.setNumberFlight(flightElement.getAttribute("number"));
@@ -102,36 +98,40 @@ public class FlightsDOMBuilder {
 		flight.setTypeAircraft(getElementTextContent(aircraftElement, "type"));
 		flight.setModelAircraft(getElementTextContent(aircraftElement, "model"));
 		Element departureElement = (Element) flightElement.getElementsByTagName("departure").item(0);
-		flight.setCountryOfDeparture(getElementTextContent(departureElement, "country"));
-		flight.setCityOfDeparture(getElementTextContent(departureElement, "city"));
-		flight.setAirportOfDeparture(getElementTextContent(departureElement, "airport"));
-		flight.setTerminalOfDeparture(getElementTextContent(departureElement, "terminal"));
-		flight.setGateOfDeparture(getElementTextContent(departureElement, "gate"));
-		Element dateDepartureElement = (Element) departureElement.getElementsByTagName("date").item(0);
-		Date dateDeparture = INPUT_DATE_FORMAT.parse(getElementTextContent(dateDepartureElement, "date"));
-		flight.setDateOfDeparture(dateDeparture);
-		flight.setTimeOfDeparture(getElementTextContent(dateDepartureElement, "time"));
+		InfoFlightData departure = buildInfoFlight(departureElement);
+		flight.setDeparture(departure);
 		Element arrivalElement = (Element) flightElement.getElementsByTagName("arrival").item(0);
-		flight.setCountryOfArrival(getElementTextContent(arrivalElement, "country"));
-		flight.setCityOfArrival(getElementTextContent(arrivalElement, "city"));
-		flight.setAirportOfArrival(getElementTextContent(arrivalElement, "airport"));
-		flight.setTerminalOfArrival(getElementTextContent(arrivalElement, "terminal"));
-		flight.setGateOfArrival(getElementTextContent(arrivalElement, "gate"));
-		Element dateArrivalElement = (Element) arrivalElement.getElementsByTagName("date").item(0);
-		Date dateArrival = INPUT_DATE_FORMAT.parse(getElementTextContent(dateArrivalElement, "date"));
-		flight.setDateOfArrival(dateArrival);
-		flight.setTimeOfArrival(getElementTextContent(dateArrivalElement, "time"));
+		InfoFlightData arrival = buildInfoFlight(arrivalElement);
+		flight.setArrival(arrival);
 		return flight;
 	}
 
+	/**
+	 * 
+	 * @param element
+	 * @return the info about flight
+	 */
+	private InfoFlightData buildInfoFlight(Element element) {
+		InfoFlightData infoFlightData = new InfoFlightData();
+		infoFlightData.setCountry(getElementTextContent(element, "country"));
+		infoFlightData.setCity(getElementTextContent(element, "city"));
+		infoFlightData.setAirport(getElementTextContent(element, "airport"));
+		infoFlightData.setTerminal(getElementTextContent(element, "terminal"));
+		infoFlightData.setGate(getElementTextContent(element, "gate"));
+		Element dateElement = (Element) element.getElementsByTagName("date").item(0);
+		String date = getElementTextContent(dateElement, "date");
+		String time = getElementTextContent(dateElement, "time");
+		infoFlightData.setDate(date);
+		infoFlightData.setTime(time);
+		return infoFlightData;
+	}
 
-	
 	/**
 	 * get text content from tag
 	 * 
 	 * @param element
 	 * @param elementName
-	 * @return 
+	 * @return the text element
 	 */
 	private static String getElementTextContent(Element element, String elementName) {
 		NodeList nList = element.getElementsByTagName(elementName);
@@ -139,74 +139,30 @@ public class FlightsDOMBuilder {
 		String text = node.getTextContent();
 		return text;
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param fileName
 	 * @param shedule
 	 * @throws TransformerException
 	 */
-	public void exportSheduleToXML (String fileName, List<Flight> shedule) throws TransformerException {
-		
+	public void exportSheduleToXML(String fileName, List<Flight> shedule) throws TransformerException {
+
 		Document document = this.documentBuilder.newDocument();
 		Element rootElement = document.createElement("shedule");
 		document.appendChild(rootElement);
 		rootElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-		rootElement.setAttribute("xmlns","http://www.epamlab");
-		rootElement.setAttribute("xsi:schemaLocation","http://www.epamlab Shedule.xsd");
-		
-		for(Flight flight : shedule) {
-					
-			Element dateElement = document.createElement("date");
-			dateElement.appendChild(document.createTextNode(flight.getStringDateOfDeparture()));
-			Element timeElement = document.createElement("time");
-			timeElement.appendChild(document.createTextNode(flight.getTimeOfDeparture()));
-			Element dateDepartureElement = document.createElement("date");
-			dateDepartureElement.appendChild(dateElement);
-			dateDepartureElement.appendChild(timeElement);
-			Element countryDepartureElement = document.createElement("country");
-			Element cityDepartureElement = document.createElement("city");
-			Element airportDepartureElement = document.createElement("airport");
-			Element terminalDepartureElement = document.createElement("terminal");
-			Element gateDepartureElement = document.createElement("gate");
-			countryDepartureElement.appendChild(document.createTextNode(flight.getCountryOfDeparture()));
-			cityDepartureElement.appendChild(document.createTextNode(flight.getCityOfDeparture()));
-			airportDepartureElement.appendChild(document.createTextNode(flight.getAirportOfDeparture()));
-			terminalDepartureElement.appendChild(document.createTextNode(flight.getTerminalOfDeparture()));
-			gateDepartureElement.appendChild(document.createTextNode(flight.getGateOfDeparture()));
-			Element departure = document.createElement("departure");
-			departure.appendChild(countryDepartureElement);
-			departure.appendChild(cityDepartureElement);
-			departure.appendChild(airportDepartureElement);
-			departure.appendChild(terminalDepartureElement);
-			departure.appendChild(gateDepartureElement);
+		rootElement.setAttribute("xmlns", "http://www.epamlab");
+		rootElement.setAttribute("xsi:schemaLocation", "http://www.epamlab Shedule.xsd");
+
+		for (Flight flight : shedule) {
+
+			InfoFlightData departure = flight.getDeparture();
+			Element departureElement = createInfoFlightData("departure", document, departure);
+			InfoFlightData arrival = flight.getArrival();
+			Element arrivalElement = createInfoFlightData("arrival", document, arrival);
 			
-			Element dateArrival = document.createElement("date");
-			dateArrival.appendChild(document.createTextNode(flight.getStringDateOfArrival()));
-			Element timeArrival = document.createElement("time");
-			timeArrival.appendChild(document.createTextNode(flight.getTimeOfArrival()));
-			Element dateArrivalElement = document.createElement("date");
-			dateArrivalElement.appendChild(dateArrival);
-			dateArrivalElement.appendChild(timeArrival);
-			Element countryArrivalElement = document.createElement("country");
-			Element cityArrivalElement = document.createElement("city");
-			Element airportArrivalElement = document.createElement("airport");
-			Element terminalArrivalElement = document.createElement("terminal");
-			Element gateArrivalElement = document.createElement("gate");
-			countryArrivalElement.appendChild(document.createTextNode(flight.getCountryOfArrival()));
-			cityArrivalElement.appendChild(document.createTextNode(flight.getCityOfArrival()));
-			airportArrivalElement.appendChild(document.createTextNode(flight.getAirportOfArrival()));
-			terminalArrivalElement.appendChild(document.createTextNode(flight.getTerminalOfArrival()));
-			gateArrivalElement.appendChild(document.createTextNode(flight.getGateOfArrival()));
-			Element arrival = document.createElement("arrival");
-			arrival.appendChild(countryArrivalElement);
-			arrival.appendChild(cityArrivalElement);
-			arrival.appendChild(airportArrivalElement);
-			arrival.appendChild(terminalArrivalElement);
-			arrival.appendChild(gateArrivalElement);
-			
-			Element typeElement = document.createElement("document");
+			Element typeElement = document.createElement("type");
 			Element modelElement = document.createElement("model");
 			typeElement.appendChild(document.createTextNode(flight.getTypeAircraft()));
 			modelElement.appendChild(document.createTextNode(flight.getModelAircraft()));
@@ -214,23 +170,57 @@ public class FlightsDOMBuilder {
 			aircraftElement.setAttribute("number", flight.getNumberAircraft());
 			aircraftElement.appendChild(typeElement);
 			aircraftElement.appendChild(modelElement);
-						
+
 			Element flightElement = document.createElement("flight");
 			flightElement.setAttribute("number", flight.getNumberFlight());
-			
+
 			flightElement.appendChild(aircraftElement);
-			flightElement.appendChild(departure);
-			flightElement.appendChild(arrival);
+			flightElement.appendChild(departureElement);
+			flightElement.appendChild(arrivalElement);
 			rootElement.appendChild(flightElement);
-			
+
 		}
-		
+
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(document);
 		StreamResult result = new StreamResult(new File(fileName));
 		transformer.transform(source, result);
-		
+
 	}
 
+	/**
+	 * 
+	 * @param nameInfo
+	 * @param document
+	 * @param infoFlightData
+	 * @return the element of xml then give information about the flight
+	 */
+	private Element createInfoFlightData(String nameInfo, Document document, InfoFlightData infoFlightData) {
+		Element dateElement = document.createElement("date");
+		dateElement.appendChild(document.createTextNode(infoFlightData.getStringDate()));
+		Element timeElement = document.createElement("time");
+		timeElement.appendChild(document.createTextNode(infoFlightData.getStringTime()));
+		Element dateInfoElement = document.createElement("date");
+		dateInfoElement.appendChild(dateElement);
+		dateInfoElement.appendChild(timeElement);
+		Element countryElement = document.createElement("country");
+		Element cityElement = document.createElement("city");
+		Element airportElement = document.createElement("airport");
+		Element terminalElement = document.createElement("terminal");
+		Element gateElement = document.createElement("gate");
+		countryElement.appendChild(document.createTextNode(infoFlightData.getCountry()));
+		cityElement.appendChild(document.createTextNode(infoFlightData.getCity()));
+		airportElement.appendChild(document.createTextNode(infoFlightData.getAirport()));
+		terminalElement.appendChild(document.createTextNode(infoFlightData.getTerminal()));
+		gateElement.appendChild(document.createTextNode(infoFlightData.getGate()));
+		Element elementInfo = document.createElement(nameInfo);
+		elementInfo.appendChild(countryElement);
+		elementInfo.appendChild(cityElement);
+		elementInfo.appendChild(airportElement);
+		elementInfo.appendChild(dateElement);
+		elementInfo.appendChild(terminalElement);
+		elementInfo.appendChild(gateElement);
+		return elementInfo;
+	}
 }
