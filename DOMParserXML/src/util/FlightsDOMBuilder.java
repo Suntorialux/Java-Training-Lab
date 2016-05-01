@@ -5,7 +5,6 @@ package util;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,9 +59,8 @@ public class FlightsDOMBuilder {
 	/**
 	 * 
 	 * @param fileName
-	 * @throws ParseException
 	 */
-	public void biuldListFlights(String fileName) throws ParseException {
+	public void biuldListFlights(String fileName) {
 		Document doc = null;
 		try {
 			// parsing XML and create tree structure
@@ -113,6 +111,7 @@ public class FlightsDOMBuilder {
 	 */
 	private InfoFlightData buildInfoFlight(Element element) {
 		InfoFlightData infoFlightData = new InfoFlightData();
+		// Create the info-object arrival or departure
 		infoFlightData.setCountry(getElementTextContent(element, "country"));
 		infoFlightData.setCity(getElementTextContent(element, "city"));
 		infoFlightData.setAirport(getElementTextContent(element, "airport"));
@@ -157,11 +156,15 @@ public class FlightsDOMBuilder {
 
 		for (Flight flight : shedule) {
 
+			//create element departure
 			InfoFlightData departure = flight.getDeparture();
 			Element departureElement = createInfoFlightData("departure", document, departure);
+			
+			//create element arrival
 			InfoFlightData arrival = flight.getArrival();
 			Element arrivalElement = createInfoFlightData("arrival", document, arrival);
 			
+			//create element aircraft
 			Element typeElement = document.createElement("type");
 			Element modelElement = document.createElement("model");
 			typeElement.appendChild(document.createTextNode(flight.getTypeAircraft()));
@@ -171,6 +174,7 @@ public class FlightsDOMBuilder {
 			aircraftElement.appendChild(typeElement);
 			aircraftElement.appendChild(modelElement);
 
+			//create element Flight and its attribute - number
 			Element flightElement = document.createElement("flight");
 			flightElement.setAttribute("number", flight.getNumberFlight());
 
@@ -190,6 +194,7 @@ public class FlightsDOMBuilder {
 	}
 
 	/**
+	 * this method create the object InfoFlightData which it contains information about departure or arrival 
 	 * 
 	 * @param nameInfo
 	 * @param document

@@ -1,5 +1,3 @@
-import java.text.ParseException;
-
 import javax.xml.transform.TransformerException;
 
 import beans.Flight;
@@ -30,7 +28,7 @@ public class Runner {
 
 		builder.exportSheduleToXML("src/shedule.xml", builder.getShedule());
 			
-		} catch (ParseException | TransformerException e) {
+		} catch (TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
