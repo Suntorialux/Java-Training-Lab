@@ -156,15 +156,15 @@ public class FlightsDOMBuilder {
 
 		for (Flight flight : shedule) {
 
-			//create element departure
+			// create element departure
 			InfoFlightData departure = flight.getDeparture();
 			Element departureElement = createInfoFlightData("departure", document, departure);
-			
-			//create element arrival
+
+			// create element arrival
 			InfoFlightData arrival = flight.getArrival();
 			Element arrivalElement = createInfoFlightData("arrival", document, arrival);
-			
-			//create element aircraft
+
+			// create element aircraft
 			Element typeElement = document.createElement("type");
 			Element modelElement = document.createElement("model");
 			typeElement.appendChild(document.createTextNode(flight.getTypeAircraft()));
@@ -174,7 +174,7 @@ public class FlightsDOMBuilder {
 			aircraftElement.appendChild(typeElement);
 			aircraftElement.appendChild(modelElement);
 
-			//create element Flight and its attribute - number
+			// create element Flight and its attribute - number
 			Element flightElement = document.createElement("flight");
 			flightElement.setAttribute("number", flight.getNumberFlight());
 
@@ -194,7 +194,8 @@ public class FlightsDOMBuilder {
 	}
 
 	/**
-	 * this method create the object InfoFlightData which it contains information about departure or arrival 
+	 * this method create the object InfoFlightData which it contains
+	 * information about departure or arrival
 	 * 
 	 * @param nameInfo
 	 * @param document

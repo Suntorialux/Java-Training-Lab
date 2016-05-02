@@ -14,11 +14,9 @@ import java.util.Date;
  */
 public class InfoFlightData {
 
-	private final static DateFormat INPUT_DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
-	private final static DateFormat OUTPUT_DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
-	private final static DateFormat INPUT_TIME_FORMAT = new SimpleDateFormat("HH:mm");
-	private final static DateFormat OUTPUT_TIME_FORMAT = new SimpleDateFormat("HH:mm");
-
+	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-mm-dd");
+	private final static DateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
+	
 	private String country;
 	private String city;
 	private String airport;
@@ -120,7 +118,7 @@ public class InfoFlightData {
 	 * @return the String date
 	 */
 	public String getStringDate() {
-		return OUTPUT_DATE_FORMAT.format(date);
+		return DATE_FORMAT.format(date);
 	}
 
 	/**
@@ -138,7 +136,7 @@ public class InfoFlightData {
 	 */
 	public void setDate(String date) {
 		try {
-			this.date = INPUT_DATE_FORMAT.parse(date);
+			this.date = DATE_FORMAT.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -156,7 +154,7 @@ public class InfoFlightData {
 	 * @return the String time
 	 */
 	public String getStringTime() {
-		return OUTPUT_TIME_FORMAT.format(time);
+		return TIME_FORMAT.format(time);
 	}
 
 	/**
@@ -174,7 +172,7 @@ public class InfoFlightData {
 	 */
 	public void setTime(String time) {
 		try {
-			this.time = INPUT_TIME_FORMAT.parse(time);
+			this.time = TIME_FORMAT.parse(time);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
