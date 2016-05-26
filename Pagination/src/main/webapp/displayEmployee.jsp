@@ -53,6 +53,8 @@
     <c:if test="${currentPage lt noOfPages}">
         <td><a href="employee.do?page=${currentPage + 1}">Next</a></td>
     </c:if>
+    
+    <a href="form.jsp">add</a>
  
 </body>
 </html>

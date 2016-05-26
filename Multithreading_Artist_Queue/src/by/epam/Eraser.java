@@ -17,7 +17,6 @@ public class Eraser extends Thread {
 	 * @param queue
 	 */
 	public Eraser(SynchronousQueue<Integer> queue) {
-		super();
 		this.queue = queue;
 	}
 

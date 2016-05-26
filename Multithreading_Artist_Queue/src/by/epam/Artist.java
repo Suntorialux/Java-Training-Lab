@@ -6,7 +6,7 @@ package by.epam;
 import java.util.concurrent.SynchronousQueue;
 
 /**
- * @author Andrei
+ * @author Andrei Yahorau
  *
  */
 public class Artist {

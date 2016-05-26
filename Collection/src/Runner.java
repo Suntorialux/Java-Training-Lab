@@ -21,6 +21,7 @@ public class Runner {
 		String word = sc.nextLine();
 		int quantity = Analizator.frequencyWord(word, text);
 		System.out.println("The word " + word + " is found " + quantity + " times.");
+		sc.close();
 
 	}
 

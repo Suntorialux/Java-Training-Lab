@@ -13,10 +13,34 @@ public class Employee {
     private double salary;
     private String deptName;
      
-    public int getEmployeeId() {
+    /**
+	 * 
+	 */
+	public Employee() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public int getEmployeeId() {
         return employeeId;
     }
-    public void setEmployeeId(int employeeId) {
+    
+    
+    /**
+	 * @param employeeName
+	 * @param salary
+	 * @param deptName
+	 */
+	public Employee(String employeeName, double salary, String deptName) {
+		super();
+		this.employeeName = employeeName;
+		this.salary = salary;
+		this.deptName = deptName;
+	}
+
+
+	public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
     public String getEmployeeName() {

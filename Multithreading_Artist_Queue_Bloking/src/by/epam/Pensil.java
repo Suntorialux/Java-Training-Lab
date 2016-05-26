@@ -35,10 +35,9 @@ public class Pensil extends Thread {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < this.iteration; i++) {
 			try {
-				queue.put(i);
 				System.out.println("Drawing..." + i);
+				queue.put(i);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
